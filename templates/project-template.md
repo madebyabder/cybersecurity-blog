@@ -3,7 +3,7 @@ title: ""
 description: ""
 date: YYYY-MM-DD
 author: "abdrx"
-category: ""
+category: "Project"
 series: ""
 part:
 tags:
@@ -34,6 +34,8 @@ medium: ""
 ## Installation
 
 ## Configuration
+
+## Testing
 
 ## Challenges
 
