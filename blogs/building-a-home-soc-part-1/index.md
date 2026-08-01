@@ -209,10 +209,4 @@ In **Part 2**, I'll continue the attack chain with web application attacks, susp
 ---
 ## Related Project
 
-SOC Simulation Repository
-
-[GitHub](https://github.com/madebyabder/SOC-Simulation-Wazuh)
-
-[Medium](https://medium.com/@madebyabder/building-a-soc-from-scratch-detecting-reconnaissance-and-ssh-brute-force-with-wazuh-part-1-611304a4e08c?sharedUserId=madebyabder)
-
-Part 2
+SOC Simulation Repository [GitHub](https://github.com/madebyabder/SOC-Simulation-Wazuh) [Medium](https://medium.com/@madebyabder/building-a-soc-from-scratch-detecting-reconnaissance-and-ssh-brute-force-with-wazuh-part-1-611304a4e08c?sharedUserId=madebyabder) Part 2
