@@ -92,9 +92,6 @@ Before launching any attacks, I confirmed that logs generated on Ubuntu were act
 
 Each event appeared inside the Wazuh Dashboard with useful investigation fields, including `agent.name`, `agent.ip`, `data.srcip`, `data.srcuser`, `rule.description`, and `rule.level`.
 
-<!-- 📸 TODO: no screenshot provided yet for this step — capture the Wazuh dashboard showing the three validation events (SSH success, SSH failure, sudo) and save as screenshots/telemetry-validation.png -->
-<!-- ![Telemetry validation in Wazuh](./screenshots/telemetry-validation.png) -->
-
 > **Lesson learned:** This step is often skipped in tutorials, but it's essential. If telemetry isn't working correctly, later investigations become unreliable — it becomes impossible to tell whether an attack wasn't detected or whether the logging pipeline simply failed.
 
 ## Practical Example
@@ -111,15 +108,9 @@ nmap -sV 192.168.56.20
 ```
 
 <!-- 📸 Screenshot: basic Nmap scan output -->
-![Basic Nmap scan](./screenshots/01-nmap-basic-scan.png)
-
-<!-- 📸 Screenshot: Nmap service-version scan output -->
-![Nmap service-version scan](./screenshots/02-nmap-service-version-scan.png)
+![Basic Nmap scan](./screenshots/01-reconnaissance/01-nmap-basic-scan.png)
 
 Instead of immediately producing SSH-related alerts, the scans generated HTTP requests against the Nginx web server. Inside the access logs, I observed requests to paths such as `/HNAP1` and `/sdk` — common artifacts produced by automated scanning tools.
-
-<!-- 📸 Screenshot: Nginx access log entries showing the scan artifacts -->
-![Nginx access log](./screenshots/04-nginx-access-log-nmap.png)
 
 Inside Wazuh, I filtered events using:
 
@@ -128,11 +119,8 @@ data.srcip: "192.168.56.10"
 nginx
 ```
 
-<!-- 📸 Screenshot: Wazuh source IP filter applied -->
-![Wazuh source IP filter](./screenshots/05-wazuh-srcip-filter.png)
-
-<!-- 📸 TODO: no screenshot provided yet for this step — capture the resulting Wazuh alert list for the recon scan and save as screenshots/wazuh-recon-alerts.png -->
-<!-- ![Wazuh reconnaissance alerts](./screenshots/wazuh-recon-alerts.png) -->
+<!-- 📸 Screenshot: Nginx events in Wazuh for the recon scan -->
+![Wazuh Nginx events](./screenshots/01-reconnaissance/07-wazuh-nginx-events.png)
 
 **Alert data observed:**
 
@@ -159,14 +147,11 @@ hydra -L users.txt -P passwords.txt ssh://192.168.56.20 -t 2 -V
 ```
 
 <!-- 📸 Screenshot: Hydra output showing attempted credential pairs -->
-![Hydra output](./screenshots/hydra-command-output.png)
+![Hydra output](./screenshots/02-ssh-bruteforce/hydra-command-output.png)
 
 Hydra performed 25 authentication attempts. No valid credentials were discovered, which was expected — the focus of this exercise was detection, not compromise.
 
 Ubuntu's authentication log showed failed passwords, invalid users, PAM authentication failures, and SSH disconnect events.
-
-<!-- 📸 Screenshot: relevant lines from /var/log/auth.log -->
-![auth.log entries](./screenshots/auth-log-failed-ssh.png)
 
 Inside Wazuh, I searched for:
 
@@ -176,7 +161,7 @@ data.srcip: "192.168.56.10"
 ```
 
 <!-- 📸 Screenshot: Wazuh SSH brute-force alerts -->
-![Wazuh SSH events](./screenshots/wazuh-ssh-failed-events.png)
+![Wazuh SSH events](./screenshots/02-ssh-bruteforce/wazuh-ssh-failed-events.png)
 
 **Alert data observed:**
 
