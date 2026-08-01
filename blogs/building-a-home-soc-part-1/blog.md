@@ -6,7 +6,7 @@
 
 > A hands-on walkthrough of building a three-machine Wazuh SOC lab and using it to detect Nmap reconnaissance and SSH brute-force attacks through real log analysis, MITRE ATT&CK mapping, and analyst-style investigation.
 
-**Series:** Part 1 of 2 — Part 2 covers web application attacks, suspicious command execution, persistence, simulated data exfiltration, and full attack-chain correlation.
+**Series:** Part 1 of 2 — [Part 2](https://github.com/madebyabder/cybersecurity-blog/blob/main/blogs/building-a-home-soc-part-2/blog.md) covers web application attacks, suspicious command execution, persistence, simulated data exfiltration, and full attack-chain correlation.
 
 ---
 
