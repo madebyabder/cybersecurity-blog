@@ -1,21 +1,26 @@
 ---
-title: "Building a Home SOC with Wazuh – Part 1"
+title: "Building a SOC From Scratch: Detecting Reconnaissance and SSH Brute-Force with Wazuh (Part 1)"
 description: "A hands-on walkthrough of building a three-machine Wazuh SOC lab and using it to detect Nmap reconnaissance and SSH brute-force attacks through real log analysis, MITRE ATT&CK mapping, and analyst-style investigation."
 date: 2026-07-31
 author: "abdrx"
-category: "Project"
+category: "SOC"
 series: "Home SOC"
 part: 1
 tags:
   - Wazuh
   - SOC
   - SIEM
+  - Blue Team
+  - Linux
+  - MITRE ATT&CK
+  - Threat Detection
+  - Log Analysis
 difficulty: Intermediate
 readingTime: 10 min
 cover: banner.webp
 featured: true
-repository: "https://github.com/madebyabder/SOC-Simulation-Wazuh"
-medium: "https://medium.com/@madebyabder/building-a-soc-from-scratch-detecting-reconnaissance-and-ssh-brute-force-with-wazuh-part-1-611304a4e08c?sharedUserId=madebyabder"
+repository: "https://github.com/madebyabder"
+medium: "https://medium.com/@madebyabder"
 ---
 
 # Building a SOC From Scratch: Detecting Reconnaissance and SSH Brute-Force with Wazuh (Part 1)
