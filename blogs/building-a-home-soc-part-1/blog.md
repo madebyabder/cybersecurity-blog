@@ -226,7 +226,7 @@ Building the environment was only the beginning. The real learning came from val
 
 Reconnaissance and SSH brute-force are relatively simple attack techniques, but they already cover many of the core skills expected from a SOC analyst: log analysis, alert triage, MITRE ATT&CK mapping, severity assessment, and structured investigation.
 
-**Part 2** continues the attack chain with web application attacks, suspicious command execution, persistence techniques, simulated data exfiltration, and full attack-chain correlation.
+**[Part 2](https://github.com/madebyabder/cybersecurity-blog/blob/main/blogs/building-a-home-soc-part-2/blog.md)** continues the attack chain with web application attacks, suspicious command execution, persistence techniques, simulated data exfiltration, and full attack-chain correlation.
 
 ## References
 
