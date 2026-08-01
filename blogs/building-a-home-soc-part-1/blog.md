@@ -108,7 +108,7 @@ nmap -sV 192.168.56.20
 ```
 
 <!-- 📸 Screenshot: basic Nmap scan output -->
-![Basic Nmap scan](./screenshots/01-reconnaissance/01-nmap-basic-scan.png)
+![Basic Nmap scan](./screenshots/01-nmap-basic-scan.png)
 
 Instead of immediately producing SSH-related alerts, the scans generated HTTP requests against the Nginx web server. Inside the access logs, I observed requests to paths such as `/HNAP1` and `/sdk` — common artifacts produced by automated scanning tools.
 
@@ -120,7 +120,7 @@ nginx
 ```
 
 <!-- 📸 Screenshot: Nginx events in Wazuh for the recon scan -->
-![Wazuh Nginx events](./screenshots/01-reconnaissance/07-wazuh-nginx-events.png)
+![Wazuh Nginx events](./screenshots/07-wazuh-nginx-events.png)
 
 **Alert data observed:**
 
@@ -147,7 +147,7 @@ hydra -L users.txt -P passwords.txt ssh://192.168.56.20 -t 2 -V
 ```
 
 <!-- 📸 Screenshot: Hydra output showing attempted credential pairs -->
-![Hydra output](./screenshots/02-ssh-bruteforce/hydra-command-output.png)
+![Hydra output](./screenshots/hydra-command-output.png)
 
 Hydra performed 25 authentication attempts. No valid credentials were discovered, which was expected — the focus of this exercise was detection, not compromise.
 
@@ -161,7 +161,7 @@ data.srcip: "192.168.56.10"
 ```
 
 <!-- 📸 Screenshot: Wazuh SSH brute-force alerts -->
-![Wazuh SSH events](./screenshots/02-ssh-bruteforce/wazuh-ssh-failed-events.png)
+![Wazuh SSH events](./screenshots/wazuh-ssh-failed-events.png)
 
 **Alert data observed:**
 
