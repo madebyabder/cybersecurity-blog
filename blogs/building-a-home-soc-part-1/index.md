@@ -6,7 +6,7 @@
 
 > A hands-on walkthrough of building a three-machine Wazuh SOC lab and using it to detect Nmap reconnaissance and SSH brute-force attacks through real log analysis, MITRE ATT&CK mapping, and analyst-style investigation.
 
-**Series:** Part 1 of 2 — [Part 2](https://github.com/madebyabder/cybersecurity-blog/blob/main/blogs/building-a-home-soc-part-2/blog.md) covers web application attacks, suspicious command execution, persistence, simulated data exfiltration, and full attack-chain correlation.
+**Series:** Part 1 of 2 — [Part 2](https://github.com/madebyabder/cybersecurity-blog/blob/main/blogs/building-a-home-soc-part-2/index.md) covers web application attacks, suspicious command execution, persistence, simulated data exfiltration, and full attack-chain correlation.
 
 ---
 
@@ -226,7 +226,7 @@ Building the environment was only the beginning. The real learning came from val
 
 Reconnaissance and SSH brute-force are relatively simple attack techniques, but they already cover many of the core skills expected from a SOC analyst: log analysis, alert triage, MITRE ATT&CK mapping, severity assessment, and structured investigation.
 
-**[Part 2](https://github.com/madebyabder/cybersecurity-blog/blob/main/blogs/building-a-home-soc-part-2/blog.md)** continues the attack chain with web application attacks, suspicious command execution, persistence techniques, simulated data exfiltration, and full attack-chain correlation.
+**[Part 2](https://github.com/madebyabder/cybersecurity-blog/blob/main/blogs/building-a-home-soc-part-2/index.md)** continues the attack chain with web application attacks, suspicious command execution, persistence techniques, simulated data exfiltration, and full attack-chain correlation.
 
 ## References
 
