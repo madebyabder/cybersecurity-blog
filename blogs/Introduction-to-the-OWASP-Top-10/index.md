@@ -48,8 +48,11 @@ The second source is a community survey, and it exists to correct a specific bli
 
 Most categories in any given edition come from the data. A smaller number come from the survey. The result is a list OWASP describes as data-informed rather than purely data-driven, and they are refreshingly upfront about that tradeoff. It is a deliberate compromise between statistical rigor and staying relevant to what is actually happening on the ground.
 
-![OWASP Top 10 2021 to 2025 mapping diagram](screenshots/owasp-top-10-2021-vs-2025-mapping.png)
-*Diagram comparing the OWASP Top 10 2021 and 2025 rankings.*
+<p align="center">
+  <img src="screenshots/owasp-top-10-2021-vs-2025-mapping.png" alt="OWASP Top 10 2021 to 2025 mapping diagram" width="700">
+  <br>
+  <em>Diagram comparing the OWASP Top 10 2021 and 2025 rankings.</em>
+</p>
 
 ## What Changed Recently, and Why It Matters to This Series
 
@@ -82,9 +85,11 @@ Here is the complete current list. Each entry below will get its own dedicated, 
 | A09 | **Security Logging and Alerting Failures** | Not just insufficient logging, but logs that are generated and never acted on. |
 | A10 | **Mishandling of Exceptional Conditions** | New for 2025. Improper error handling, logic errors, and systems that fail open instead of fail closed. |
 
-![OWASP Top 10 2025 category overview](screenshots/owasp-top-10-2025-category-overview.png)
-
-*Overview graphic of the ten OWASP Top 10:2025 categories from A01 Broken Access Control through A10 Mishandling of Exceptional Conditions.*
+<p align="center">
+  <img src="screenshots/owasp-top-10-2025-category-overview.png" alt="OWASP Top 10 2025 category overview" width="700">
+  <br>
+  <em>Overview graphic of the ten OWASP Top 10:2025 categories from A01 Broken Access Control through A10 Mishandling of Exceptional Conditions.</em>
+</p>
 
 It is also worth knowing that three additional risks came close to making the final cut but did not quite get there. OWASP documents them separately as "next steps" categories: a renamed version of Denial of Service now focused on application resilience, memory management failures common in languages like C and C++, and a genuinely new entry addressing the risks of trusting AI-generated code without adequate review. That last one is becoming harder to ignore with each passing year, and later articles in this series will reference it where relevant, particularly as more development workflows come to rely on AI assistance by default.
 
