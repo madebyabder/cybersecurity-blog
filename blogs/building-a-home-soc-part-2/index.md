@@ -4,9 +4,9 @@
 ![Category](https://img.shields.io/badge/category-Blue%20Team%20%2F%20SOC-blue)
 ![Tools](https://img.shields.io/badge/tools-Wazuh%20%7C%20curl%20%7C%20FIM-orange)
 
-> Continuing the multi-stage attack chain from [Part 1](https://github.com/madebyabder/cybersecurity-blog/blob/main/blogs/building-a-home-soc-part-1/blog.md) — web application probing, privileged command abuse, persistence techniques, a simulated data exfiltration, and how all six stages tie together into a single investigation.
+> Continuing the multi-stage attack chain from [Part 1](https://github.com/madebyabder/cybersecurity-blog/blob/main/blogs/building-a-home-soc-part-1/index.md) — web application probing, privileged command abuse, persistence techniques, a simulated data exfiltration, and how all six stages tie together into a single investigation.
 
-**Series:** Part 2 of 2 — see [Part 1](https://github.com/madebyabder/cybersecurity-blog/blob/main/blogs/building-a-home-soc-part-1/blog.md) for lab architecture, telemetry validation, reconnaissance detection, and SSH brute-force detection.
+**Series:** Part 2 of 2 — see [Part 1](https://github.com/madebyabder/cybersecurity-blog/blob/main/blogs/building-a-home-soc-part-1/index.md) for lab architecture, telemetry validation, reconnaissance detection, and SSH brute-force detection.
 
 ---
 
@@ -30,7 +30,7 @@
 
 ## Introduction
 
-[Part 1](https://github.com/madebyabder/cybersecurity-blog/blob/main/blogs/building-a-home-soc-part-1/blog.md) covered the first half of this attack chain: building the lab, validating telemetry, and detecting reconnaissance and SSH brute-force. On their own, those two stages are relatively low-stakes — a scan and some failed logins.
+[Part 1](https://github.com/madebyabder/cybersecurity-blog/blob/main/blogs/building-a-home-soc-part-1/index.md) covered the first half of this attack chain: building the lab, validating telemetry, and detecting reconnaissance and SSH brute-force. On their own, those two stages are relatively low-stakes — a scan and some failed logins.
 
 This second half is where the chain gets more interesting. Once an attacker moves past the door, the questions change: what are they probing on the application layer, what commands are they running once they have some level of access, are they trying to stay, and are they trying to take anything with them?
 
@@ -217,4 +217,4 @@ That's the core skill this project was built to practice, and it's the same skil
 
 ---
 
-*Originally published on [Medium](https://medium.com/@madebyabder/building-a-soc-from-scratch-web-attacks-persistence-and-exfiltration-with-wazuh-part-2-410e81fc8ebe). Cross-posted here as part of my cybersecurity portfolio. See [Part 1](https://github.com/madebyabder/cybersecurity-blog/blob/main/blogs/building-a-home-soc-part-1/blog.md) for the first half of this project.*
+*Originally published on [Medium](https://medium.com/@madebyabder/building-a-soc-from-scratch-web-attacks-persistence-and-exfiltration-with-wazuh-part-2-410e81fc8ebe). Cross-posted here as part of my cybersecurity portfolio. See [Part 1](https://github.com/madebyabder/cybersecurity-blog/blob/main/blogs/building-a-home-soc-part-1/index.md) for the first half of this project.*
