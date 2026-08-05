@@ -1,64 +1,73 @@
 # 📝 Cybersecurity Blog
 
-Welcome to my cybersecurity blog repository.
+Welcome to my cybersecurity knowledge base.
 
-This repository contains every technical article I write throughout my cybersecurity journey, covering topics such as penetration testing, SOC operations, web security, networking, Active Directory, malware analysis, CTFs, and cybersecurity projects.
+This repository contains every technical article I publish throughout my cybersecurity journey. Each article is written in Markdown and covers real-world security concepts, hands-on labs, and practical projects.
 
-All articles are written in Markdown and serve as the source for my portfolio website and other publishing platforms.
-
----
-
-## 🌐 Read the Blog
-
-➡ **Visit my portfolio website:** *(link once your website is ready)*
-
-There you'll find:
-
-- 📚 Every article
-- 🔎 Search & filters
-- 🏷 Categories & tags
-- ⏱ Reading time
-- 🔗 Related projects
-- 📸 Images & diagrams
-- 📈 Learning journey
+The goal is to document my learning, share knowledge with the community, and build a long-term cybersecurity reference for students, developers, and security professionals.
 
 ---
 
-## 🔥 Latest Articles
+## 🚀 What You'll Find
 
-<!-- BLOG-LIST:START -->
-This section is automatically updated whenever a new article is published.
-<!-- BLOG-LIST:END -->
-
----
-
-## 📂 Categories
-
-- 🛡 SOC & Threat Detection
-- 🌐 Web Security
+- 🌐 Web Application Security
+- 🛡️ Security Operations (SOC)
+- 🔍 Threat Detection & Incident Response
 - 🧑‍💻 Penetration Testing
 - 📡 Networking
-- 🖥 Linux
-- 🪟 Windows
+- 🐧 Linux Security
+- 🪟 Windows Security
 - 🏢 Active Directory
 - ☁️ Cloud Security
-- 🔍 Digital Forensics
+- 🔬 Digital Forensics
 - 🦠 Malware Analysis
-- 🏴 CTF Writeups
-- 🧪 Labs & Projects
+- 🏴 Capture The Flag (CTF) Write-ups
+- 🧪 Security Labs & Projects
 - 📖 Learning Notes
 
 ---
 
-## 📌 Related Repositories
+## 📝 Latest Articles
 
-- 💻 Portfolio Website
-- 🛡 SOC Simulation
-- 🍯 T-Pot Honeypot
-- 🎯 TryHackMe Notes
-- 🌐 PortSwigger Notes
-- 🏴 CTF Writeups
+<!-- BLOG-POST-LIST:START -->
+<!-- Automatically updated -->
+<!-- BLOG-POST-LIST:END -->
 
 ---
 
-⭐ If you enjoy my articles, consider following my journey on GitHub.
+## 📚 Featured Series
+
+### 🔐 Mastering the OWASP Top 10
+A beginner-friendly series exploring the most critical web application security risks, their impact, and how to prevent them.
+
+### 🛡️ Building a SOC from Scratch
+Follow the complete process of building a Security Operations Center using open-source tools.
+
+### 🎯 PortSwigger Web Security Academy
+Practical walkthroughs of PortSwigger labs with explanations of the underlying vulnerabilities and defensive best practices.
+
+### 🧪 Cybersecurity Labs & Projects
+Documentation of personal cybersecurity projects, home labs, and experiments.
+
+---
+
+## 🔗 Related Repositories
+
+- 🌐 Portfolio Website *(Coming Soon)*
+- 🛡️ SOC Simulation
+- 🍯 T-Pot Honeypot
+- 🎯 PortSwigger Labs
+- 🏴 CTF Write-ups
+- 🧰 Cybersecurity Tools
+
+---
+
+## 📬 Connect With Me
+
+- 💼 LinkedIn
+- 📝 Medium
+- 🌐 Portfolio Website *(Coming Soon)*
+
+---
+
+⭐ If you enjoy these articles or find them helpful, consider starring the repository and following my cybersecurity journey on GitHub.
