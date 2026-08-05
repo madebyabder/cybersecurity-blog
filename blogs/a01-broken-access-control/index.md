@@ -149,4 +149,4 @@ Before we get there, though, this publication is taking a short detour. The next
 
 ---
 
-*Originally published on [Medium](https://medium.com/@madebyabder/a01-broken-access-control-understanding-the-most-critical-web-security-risk). Cross-posted here as part of my cybersecurity portfolio.*
+*Originally published on [Medium](https://medium.com/@madebyabder/a01-broken-access-control-understanding-the-most-critical-web-security-risk-ba8c44c97845?sharedUserId=madebyabder). Cross-posted here as part of my cybersecurity portfolio.*
