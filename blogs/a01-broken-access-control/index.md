@@ -6,7 +6,7 @@
 
 > A deep dive into the OWASP Top 10's #1 risk: what access control actually means, why it fails so often, the most common real-world patterns (IDOR, privilege escalation, forced browsing), and how to prevent it at the server level.
 
-**Series:** Part 2 &nbsp;→&nbsp; **Previous: [Introduction to the OWASP Top 10](../introduction-to-owasp-top-10/index.md)**
+**Series:** Part 2 &nbsp;→&nbsp; **Previous: [Introduction to the OWASP Top 10](https://github.com/madebyabder/cybersecurity-blog/blob/main/blogs/Introduction-to-the-OWASP-Top-10/index.md)**
 
 ---
 
