@@ -1,73 +1,105 @@
-# 📝 Cybersecurity Blog
+<div align="center">
 
-Welcome to my cybersecurity knowledge base.
+# Cybersecurity Blog
 
-This repository contains every technical article I publish throughout my cybersecurity journey. Each article is written in Markdown and covers real-world security concepts, hands-on labs, and practical projects.
+**A growing knowledge base of hands-on cybersecurity writing.**
 
-The goal is to document my learning, share knowledge with the community, and build a long-term cybersecurity reference for students, developers, and security professionals.
+Real-world security concepts, lab walkthroughs, and defensive engineering, written and documented as I learn.
 
----
+[![Medium](https://img.shields.io/badge/Medium-@madebyabder-black?style=flat&logo=medium)](https://medium.com/@madebyabder)
+[![Status](https://img.shields.io/badge/status-active-brightgreen)](#)
+[![License](https://img.shields.io/badge/license-MIT-blue)](#license)
 
-## 🚀 What You'll Find
-
-- 🌐 Web Application Security
-- 🛡️ Security Operations (SOC)
-- 🔍 Threat Detection & Incident Response
-- 🧑‍💻 Penetration Testing
-- 📡 Networking
-- 🐧 Linux Security
-- 🪟 Windows Security
-- 🏢 Active Directory
-- ☁️ Cloud Security
-- 🔬 Digital Forensics
-- 🦠 Malware Analysis
-- 🏴 Capture The Flag (CTF) Write-ups
-- 🧪 Security Labs & Projects
-- 📖 Learning Notes
+</div>
 
 ---
 
-## 📝 Latest Articles
+## About
+
+This repository holds every technical article I publish, cross-posted from Medium into clean, versioned Markdown. Each piece covers a real security concept, a hands-on lab, or a project built from scratch, aimed at students, developers, and security professionals who want the theory and the practical application together, not just one or the other.
+
+The goal is threefold: document my own learning honestly, share knowledge with the community, and build a reference I can point back to as the projects grow.
+
+## Topics Covered
+
+| | | |
+|---|---|---|
+| Web Application Security | Security Operations (SOC) | Threat Detection & IR |
+| Penetration Testing | Networking | Linux Security |
+| Windows Security | Active Directory | Cloud Security |
+| Digital Forensics | Malware Analysis | CTF Write-ups |
+
+## Latest Articles
+
+*Auto-updated by GitHub Actions whenever a new article is published on [Medium](https://medium.com/@madebyabder).*
 
 <!-- BLOG-POST-LIST:START -->
 <!-- Automatically updated -->
 <!-- BLOG-POST-LIST:END -->
 
+## Featured Series
+
+### Mastering the OWASP Top 10
+A category-by-category walkthrough of the OWASP Top 10:2025, covering what each risk is, why it exists, and how to prevent it.
+→ [`blogs/introduction-to-owasp-top-10/`](blogs/introduction-to-owasp-top-10/index.md)
+
+### Building a SOC From Scratch
+Deploying a Wazuh-based SOC lab and using it to detect real attack techniques through log analysis and MITRE ATT&CK mapping.
+→ [`blogs/building-a-home-soc-part-1/`](blogs/building-a-home-soc-part-1/index.md)
+
+### PortSwigger Web Security Academy Write-ups
+Case-study style walkthroughs of PortSwigger labs, paired with the related OWASP Top 10 article, focused on the reasoning process rather than raw solutions.
+
+### Cybersecurity Tools
+Guides for tools used day-to-day in security work: Burp Suite, Nmap, Wireshark, Hydra, and others.
+
+### Home Labs & Projects
+Documentation of personal labs and experiments, including Active Directory labs and the T-Pot honeypot project.
+
+### Networking & Security Fundamentals
+Core concepts underpinning everything else in this repo: networking, operating system security, and authentication.
+
+### Career & Learning
+Notes on certifications, study strategies, and the broader path into cybersecurity.
+
+## Repository Structure
+
+```
+cybersecurity-blog/
+├── blogs/
+│   ├── introduction-to-owasp-top-10/
+│   │   ├── index.md
+│   │   └── screenshots/
+│   ├── a01-broken-access-control/
+│   │   ├── index.md
+│   │   └── screenshots/
+│   └── building-a-home-soc-part-1/
+│       ├── index.md
+│       └── screenshots/
+├── .github/workflows/
+│   └── update-readme.yml
+└── README.md
+```
+
+Each article lives in its own folder with an `index.md` and a local `screenshots/` directory, so images stay next to the content that uses them.
+
+## Related Repositories
+
+- [SOC Simulation](#)
+- [T-Pot Honeypot](#)
+- [PortSwigger Labs](#)
+- [CTF Write-ups](#)
+- [Cybersecurity Tools](#)
+
+## Connect
+
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0A66C2?style=flat&logo=linkedin)](#)
+[![Medium](https://img.shields.io/badge/Medium-Follow-black?style=flat&logo=medium)](https://medium.com/@madebyabder)
+
 ---
 
-## 📚 Featured Series
+<div align="center">
 
-### 🔐 Mastering the OWASP Top 10
-A beginner-friendly series exploring the most critical web application security risks, their impact, and how to prevent them.
+If you find these articles useful, a star on this repository helps others find it too.
 
-### 🛡️ Building a SOC from Scratch
-Follow the complete process of building a Security Operations Center using open-source tools.
-
-### 🎯 PortSwigger Web Security Academy
-Practical walkthroughs of PortSwigger labs with explanations of the underlying vulnerabilities and defensive best practices.
-
-### 🧪 Cybersecurity Labs & Projects
-Documentation of personal cybersecurity projects, home labs, and experiments.
-
----
-
-## 🔗 Related Repositories
-
-- 🌐 Portfolio Website *(Coming Soon)*
-- 🛡️ SOC Simulation
-- 🍯 T-Pot Honeypot
-- 🎯 PortSwigger Labs
-- 🏴 CTF Write-ups
-- 🧰 Cybersecurity Tools
-
----
-
-## 📬 Connect With Me
-
-- 💼 LinkedIn
-- 📝 Medium
-- 🌐 Portfolio Website *(Coming Soon)*
-
----
-
-⭐ If you enjoy these articles or find them helpful, consider starring the repository and following my cybersecurity journey on GitHub.
+</div>
