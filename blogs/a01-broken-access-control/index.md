@@ -63,7 +63,7 @@ Attribute-Based Access Control takes a more flexible approach. Instead of relyin
 ABAC is more powerful and more precise, but that power comes with added complexity in both design and maintenance. Many modern applications end up using a hybrid: RBAC for broad structural permissions, with ABAC-style ownership and context checks layered on top for anything involving individual records.
 
 <p align="center">
-  <img src="screenshots/authentication-authorization-resource-flow.png" alt="Authentication, authorization, and resource access flow diagram" width="700">
+  <img src="screenshots/authentication_authorization_resource_flow.png" alt="Authentication, authorization, and resource access flow diagram" width="700">
   <br>
   <em>Every request should pass through both an authentication check and an authorization check before reaching a resource.</em>
 </p>
