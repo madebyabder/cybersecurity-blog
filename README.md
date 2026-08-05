@@ -41,8 +41,8 @@ The goal is threefold: document my own learning honestly, share knowledge with t
 <!-- BLOG-POST-LIST:START -->
 - [A01: Broken Access Control, Understanding the Most Critical Web Security Risk](https://medium.com/@madebyabder/a01-broken-access-control-understanding-the-most-critical-web-security-risk-ba8c44c97845?source=rss-0aa51ce43cdd------2)
 - [Introduction to the OWASP Top 10: The Map Every Developer Needs](https://infosecwriteups.com/introduction-to-the-owasp-top-10-the-map-every-developer-needs-5dbdbaad3ef5?source=rss-0aa51ce43cdd------2)
-- [Building a SOC From Scratch: Web Attacks, Persistence, and Exfiltration with Wazuh (Part 2)](https://medium.com/@madebyabder/building-a-soc-from-scratch-web-attacks-persistence-and-exfiltration-with-wazuh-part-2-410e81fc8ebe?source=rss-0aa51ce43cdd------2)
-- [Building a SOC From Scratch: Detecting Reconnaissance and SSH Brute-Force with Wazuh (Part 1)](https://infosecwriteups.com/building-a-soc-from-scratch-detecting-reconnaissance-and-ssh-brute-force-with-wazuh-part-1-611304a4e08c?source=rss-0aa51ce43cdd------2)
+- [Building a SOC From Scratch: Web Attacks, Persistence, and Exfiltration with Wazuh &lpar;Part 2&rpar;](https://medium.com/@madebyabder/building-a-soc-from-scratch-web-attacks-persistence-and-exfiltration-with-wazuh-part-2-410e81fc8ebe?source=rss-0aa51ce43cdd------2)
+- [Building a SOC From Scratch: Detecting Reconnaissance and SSH Brute-Force with Wazuh &lpar;Part 1&rpar;](https://infosecwriteups.com/building-a-soc-from-scratch-detecting-reconnaissance-and-ssh-brute-force-with-wazuh-part-1-611304a4e08c?source=rss-0aa51ce43cdd------2)
 <!-- BLOG-POST-LIST:END -->
 
 <sub>Full history and cross-posted Markdown versions live under [`blogs/`](blogs/).</sub>
