@@ -6,7 +6,7 @@
 
 > A clear breakdown of what the OWASP Top 10 actually is, how the list gets built, what changed in the 2025 edition, and why it functions as a shared vocabulary for application security instead of just a compliance checkbox.
 
-**Series:** Part 1 &nbsp;→&nbsp; **Next up: A01 Broken Access Control**
+**Series:** Part 1 &nbsp;→&nbsp; **Next up: [A01 Broken Access Control](https://github.com/madebyabder/cybersecurity-blog/blob/main/blogs/a01-broken-access-control/index.md)**
 
 ---
 
