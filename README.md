@@ -7,12 +7,15 @@
 Real-world security concepts, lab walkthroughs, and defensive engineering, written and documented as I learn.
 
 [![Medium](https://img.shields.io/badge/Medium-@madebyabder-black?style=flat&logo=medium)](https://medium.com/@madebyabder)
-[![Status](https://img.shields.io/badge/status-active-brightgreen)](#)
-[![License](https://img.shields.io/badge/license-MIT-blue)](#license)
+[![Status](https://img.shields.io/badge/status-active-brightgreen?style=flat)](#)
+[![Last Updated](https://img.shields.io/github/last-commit/madebyabder/cybersecurity-blog?style=flat&label=last%20updated)](#)
+[![License](https://img.shields.io/badge/license-MIT-blue?style=flat)](#license)
+
+<sub>[About](#about) · [Latest from Medium](#latest-from-medium) · [Featured Series](#featured-series) · [Repository Structure](#repository-structure) · [Connect](#connect)</sub>
 
 </div>
 
----
+<br>
 
 ## About
 
@@ -20,50 +23,93 @@ This repository holds every technical article I publish, cross-posted from Mediu
 
 The goal is threefold: document my own learning honestly, share knowledge with the community, and build a reference I can point back to as the projects grow.
 
-## Topics Covered
+**Topics covered:**
 
-| | | |
-|---|---|---|
-| Web Application Security | Security Operations (SOC) | Threat Detection & IR |
-| Penetration Testing | Networking | Linux Security |
-| Windows Security | Active Directory | Cloud Security |
-| Digital Forensics | Malware Analysis | CTF Write-ups |
+`Web Application Security` `Security Operations (SOC)` `Threat Detection & IR` `Penetration Testing` `Networking` `Linux Security` `Windows Security` `Active Directory` `Cloud Security` `Digital Forensics` `Malware Analysis` `CTF Write-ups`
 
-## Latest Articles
+<br>
 
-*Auto-updated by GitHub Actions whenever a new article is published on [Medium](https://medium.com/@madebyabder).*
+## Latest from Medium
+
+<!--
+  Auto-updated by .github/workflows/update-readme.yml
+  Pulls the 5 most recent posts from https://medium.com/feed/@madebyabder
+  Runs daily, on every push to main, and on manual trigger. Do not edit by hand,
+  changes here get overwritten on the next run.
+-->
 
 <!-- BLOG-POST-LIST:START -->
 - [A01: Broken Access Control, Understanding the Most Critical Web Security Risk](https://medium.com/@madebyabder/a01-broken-access-control-understanding-the-most-critical-web-security-risk-ba8c44c97845?source=rss-0aa51ce43cdd------2)
 - [Introduction to the OWASP Top 10: The Map Every Developer Needs](https://infosecwriteups.com/introduction-to-the-owasp-top-10-the-map-every-developer-needs-5dbdbaad3ef5?source=rss-0aa51ce43cdd------2)
-- [Building a SOC From Scratch: Web Attacks, Persistence, and Exfiltration with Wazuh &lpar;Part 2&rpar;](https://medium.com/@madebyabder/building-a-soc-from-scratch-web-attacks-persistence-and-exfiltration-with-wazuh-part-2-410e81fc8ebe?source=rss-0aa51ce43cdd------2)
-- [Building a SOC From Scratch: Detecting Reconnaissance and SSH Brute-Force with Wazuh &lpar;Part 1&rpar;](https://infosecwriteups.com/building-a-soc-from-scratch-detecting-reconnaissance-and-ssh-brute-force-with-wazuh-part-1-611304a4e08c?source=rss-0aa51ce43cdd------2)
+- [Building a SOC From Scratch: Web Attacks, Persistence, and Exfiltration with Wazuh (Part 2)](https://medium.com/@madebyabder/building-a-soc-from-scratch-web-attacks-persistence-and-exfiltration-with-wazuh-part-2-410e81fc8ebe?source=rss-0aa51ce43cdd------2)
+- [Building a SOC From Scratch: Detecting Reconnaissance and SSH Brute-Force with Wazuh (Part 1)](https://infosecwriteups.com/building-a-soc-from-scratch-detecting-reconnaissance-and-ssh-brute-force-with-wazuh-part-1-611304a4e08c?source=rss-0aa51ce43cdd------2)
 <!-- BLOG-POST-LIST:END -->
+
+<sub>Full history and cross-posted Markdown versions live under [`blogs/`](blogs/).</sub>
+
+<br>
 
 ## Featured Series
 
-### Mastering the OWASP Top 10
+<table>
+<tr>
+<td width="50%" valign="top">
+
+**Mastering the OWASP Top 10**
 A category-by-category walkthrough of the OWASP Top 10:2025, covering what each risk is, why it exists, and how to prevent it.
 → [`blogs/introduction-to-owasp-top-10/`](blogs/introduction-to-owasp-top-10/index.md)
 
-### Building a SOC From Scratch
+</td>
+<td width="50%" valign="top">
+
+**Building a SOC From Scratch**
 Deploying a Wazuh-based SOC lab and using it to detect real attack techniques through log analysis and MITRE ATT&CK mapping.
 → [`blogs/building-a-home-soc-part-1/`](blogs/building-a-home-soc-part-1/index.md)
 
-### PortSwigger Web Security Academy Write-ups
+</td>
+</tr>
+<tr>
+<td width="50%" valign="top">
+
+**PortSwigger Web Security Academy Write-ups**
 Case-study style walkthroughs of PortSwigger labs, paired with the related OWASP Top 10 article, focused on the reasoning process rather than raw solutions.
 
-### Cybersecurity Tools
+</td>
+<td width="50%" valign="top">
+
+**Cybersecurity Tools**
 Guides for tools used day-to-day in security work: Burp Suite, Nmap, Wireshark, Hydra, and others.
 
-### Home Labs & Projects
+</td>
+</tr>
+<tr>
+<td width="50%" valign="top">
+
+**Home Labs & Projects**
 Documentation of personal labs and experiments, including Active Directory labs and the T-Pot honeypot project.
 
-### Networking & Security Fundamentals
+</td>
+<td width="50%" valign="top">
+
+**Networking & Security Fundamentals**
 Core concepts underpinning everything else in this repo: networking, operating system security, and authentication.
 
-### Career & Learning
+</td>
+</tr>
+<tr>
+<td width="50%" valign="top">
+
+**Career & Learning**
 Notes on certifications, study strategies, and the broader path into cybersecurity.
+
+</td>
+<td width="50%" valign="top">
+
+</td>
+</tr>
+</table>
+
+<br>
 
 ## Repository Structure
 
@@ -76,7 +122,7 @@ cybersecurity-blog/
 │   ├── a01-broken-access-control/
 │   │   ├── index.md
 │   │   └── screenshots/
-│   └── building-a-home-soc-part-1/
+│   ├── building-a-home-soc-part-1/
 │   │   ├── index.md
 │   │   └── screenshots/
 │   └── building-a-home-soc-part-2/
@@ -89,6 +135,8 @@ cybersecurity-blog/
 
 Each article lives in its own folder with an `index.md` and a local `screenshots/` directory, so images stay next to the content that uses them.
 
+<br>
+
 ## Related Repositories
 
 - [SOC Simulation](#)
@@ -96,6 +144,8 @@ Each article lives in its own folder with an `index.md` and a local `screenshots
 - [PortSwigger Labs](#)
 - [CTF Write-ups](#)
 - [Cybersecurity Tools](#)
+
+<br>
 
 ## Connect
 
@@ -105,7 +155,5 @@ Each article lives in its own folder with an `index.md` and a local `screenshots
 ---
 
 <div align="center">
-
-If you find these articles useful, a star on this repository helps others find it too.
-
+<sub>If you find these articles useful, a star on this repository helps others find it too.</sub>
 </div>
