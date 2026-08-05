@@ -74,6 +74,9 @@ cybersecurity-blog/
 │   │   ├── index.md
 │   │   └── screenshots/
 │   └── building-a-home-soc-part-1/
+│   │   ├── index.md
+│   │   └── screenshots/
+│   └── building-a-home-soc-part-2/
 │       ├── index.md
 │       └── screenshots/
 ├── .github/workflows/
