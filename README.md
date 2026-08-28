@@ -39,6 +39,7 @@ The goal is threefold: document my own learning honestly, share knowledge with t
 -->
 
 <!-- BLOG-POST-LIST:START -->
+- [Retrieving Hidden Data: A Walkthrough of SQL Injection in a WHERE Clause](https://medium.com/@madebyabder/retrieving-hidden-data-a-walkthrough-of-sql-injection-in-a-where-clause-6fef8733514a?source=rss-0aa51ce43cdd------2)
 - [A01: Broken Access Control, Understanding the Most Critical Web Security Risk](https://blog.securitybreak.io/a01-broken-access-control-understanding-the-most-critical-web-security-risk-ba8c44c97845?source=rss-0aa51ce43cdd------2)
 - [Introduction to the OWASP Top 10: The Map Every Developer Needs](https://blog.securitybreak.io/introduction-to-the-owasp-top-10-the-map-every-developer-needs-5dbdbaad3ef5?source=rss-0aa51ce43cdd------2)
 - [Building a SOC From Scratch: Web Attacks, Persistence, and Exfiltration with Wazuh &lpar;Part 2&rpar;](https://blog.securitybreak.io/building-a-soc-from-scratch-web-attacks-persistence-and-exfiltration-with-wazuh-part-2-410e81fc8ebe?source=rss-0aa51ce43cdd------2)
