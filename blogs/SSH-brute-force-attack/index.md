@@ -36,6 +36,11 @@ The security of that authentication process therefore matters a lot.
 
 ---
 
+<p align="center">
+  <img src="screenshots/SSH_diagram.png" alt="SSH diagram" width="700">
+  <br>
+</p>
+
 ## 2. What Is an SSH Brute-Force Attack?
 
 A brute-force attack attempts to gain access by repeatedly trying authentication credentials.
