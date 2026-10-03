@@ -1,207 +1,189 @@
 # What Actually Happens During an SSH Brute-Force Attack?
 
-SSH is one of the most common ways administrators remotely access Linux servers. It is also one of the services that attackers routinely probe when a server is exposed to the Internet.
+<p align="center">
+  <img src="screenshots/SSH_diagram.png" alt="SSH connection and authentication diagram" width="700">
+  <br>
+  <em>Figure 1: A simplified view of an SSH connection, from TCP handshake to authenticated session.</em>
+</p>
 
-A brute-force attack against SSH is simple in concept: repeatedly attempt authentication with different usernames, passwords, or password combinations until one works.
 
-But what actually happens during the attack?
 
-This article breaks the process down from the network connection to the authentication logs, then looks at what a defender can do about it.
+
+SSH is the standard way administrators reach Linux servers remotely. It is also one of the first services an attacker probes when a machine is exposed to the Internet. Leave a server on a public IP address for a few hours and its authentication log will usually show why.
+
+The idea behind a brute-force attack is simple: try credentials until one works. What is more interesting is what that looks like on the wire, in the logs, and on a defender's screen.
+
+This article follows an attack from the first connection to the authentication log, then covers detection and defense.
 
 ---
 
-## 1. First: What Is SSH?
+## Table of Contents
 
-**SSH (Secure Shell)** is a cryptographic network protocol used to securely access remote systems.
+1. [What Is SSH?](#1-what-is-ssh)
+2. [What Is an SSH Brute-Force Attack?](#2-what-is-an-ssh-brute-force-attack)
+3. [Anatomy of the Attack](#3-anatomy-of-the-attack)
+4. [What the Attack Looks Like in Logs](#4-what-the-attack-looks-like-in-logs)
+5. [When Brute Force Becomes Dangerous](#5-when-brute-force-becomes-dangerous)
+6. [Detection](#6-detection)
+7. [Defense](#7-defense)
+8. [Investigating an Alert as a SOC Analyst](#8-investigating-an-alert-as-a-soc-analyst)
+9. [The Bigger Lesson](#9-the-bigger-lesson)
+10. [Conclusion](#conclusion)
+11. [References](#references)
 
-A typical connection looks like this:
+---
+
+## 1. What Is SSH?
+
+**SSH (Secure Shell)** is a cryptographic network protocol used to access and manage remote systems over an untrusted network. It encrypts the session, so credentials and commands are not readable in transit.
+
+A typical connection follows this sequence:
 
 ```text
-SSH Client                         SSH Server
-    |                                  |
-    | ---- TCP connection -----------> |
-    |                                  |
-    | <--- SSH negotiation ------------|
-    |                                  |
-    | ---- Authentication ------------>|
-    |                                  |
-    | <--------- Access ---------------|
+SSH Client                           SSH Server
+    |                                    |
+    | ------- TCP connection ----------> |
+    |                                    |
+    | <------ SSH negotiation ---------- |
+    |                                    |
+    | ------- Authentication ----------> |
+    |                                    |
+    | <------- Access granted ---------- |
 ```
 
-SSH commonly listens on **TCP port 22**, although administrators can configure it to use another port.
+SSH listens on **TCP port 22** by default, although administrators can move it to another port. After authentication, the user can do whatever their account permissions allow.
 
-Once authenticated, the user can interact with the remote system according to the permissions of their account.
-
-The security of that authentication process therefore matters a lot.
+That makes the authentication step the gate to the whole system, and the reason it attracts so much attacker attention.
 
 ---
-
-<p align="center">
-  <img src="screenshots/SSH_diagram.png" alt="SSH diagram" width="700">
-  <br>
-</p>
 
 ## 2. What Is an SSH Brute-Force Attack?
 
-A brute-force attack attempts to gain access by repeatedly trying authentication credentials.
-
-A basic attack might look like:
+A brute-force attack tries to gain access by repeatedly submitting credentials. The attacker does not know in advance which ones are valid, so they test possibilities:
 
 ```text
-admin     : password123
-admin     : admin123
-admin     : qwerty
-admin     : letmein
-root      : password
-root      : 123456
+admin  : password123
+admin  : admin123
+admin  : qwerty
+root   : password
+root   : 123456
 ...
 ```
 
-A more realistic automated attack can test large lists of usernames and passwords.
+Real attacks are automated and work through very large lists of usernames and passwords at high speed.
 
-The important point is that the attacker does not necessarily know which credentials are valid beforehand.
+The term "brute force" is often used loosely. There are four related techniques, and they behave differently in logs:
 
-They are testing possibilities.
+| Technique | How it works | MITRE ATT&CK |
+|---|---|---|
+| **Brute force** | Systematically tries many password combinations against an account | T1110.001 |
+| **Dictionary attack** | Tries passwords from a prepared wordlist | T1110.001 |
+| **Password spraying** | Tries one or a few common passwords against many accounts, which avoids per-account lockouts | T1110.003 |
+| **Credential stuffing** | Replays username and password pairs leaked in earlier breaches | T1110.004 |
 
-There are several related approaches:
-
-- **Brute force:** systematically trying many password combinations.
-- **Dictionary attack:** trying passwords from a prepared wordlist.
-- **Password spraying:** trying one common password against many accounts to avoid triggering account-specific protections.
-- **Credential stuffing:** trying username/password pairs obtained from previous breaches.
-
-These techniques are related, but they are not identical.
+Knowing which one you are looking at changes how you investigate. Spraying, for example, shows up as one failure per user across many users, not as many failures against one user.
 
 ---
 
-## 3. Step 1 — Finding an SSH Service
+## 3. Anatomy of the Attack
 
-Before attempting authentication, an attacker needs to find systems exposing SSH.
+An SSH brute-force attack has four stages.
 
-For example, a network scan may reveal:
+```mermaid
+flowchart LR
+    A[1. Discover SSH service] --> B[2. Establish connection]
+    B --> C[3. Attempt credentials]
+    C -->|Failed| C
+    C -->|Valid credentials| D[4. Access gained]
+```
+
+### Stage 1: Finding an SSH service
+
+Before guessing anything, the attacker needs a target. A scan reveals exposed services:
 
 ```text
 PORT   STATE SERVICE
 22/tcp open  ssh
 ```
 
-That does not mean the system has been compromised.
+An open port does not mean the system is compromised. It means a service is reachable and answering. Exposure widens the attack surface, though, particularly when the service faces the public Internet.
 
-It simply means that an SSH service is reachable and responding.
+> **An exposed service is not a compromised service, but it is the precondition for every attack that follows.**
 
-From a defender's perspective, this is the first important distinction:
+### Stage 2: Establishing the connection
 
-> **An exposed service is not automatically a compromised service.**
+The attacker connects, and the client and server negotiate the parameters of an encrypted session. Only after that does authentication begin.
 
-Exposure increases the attack surface, however, especially when the service is accessible from the public Internet.
+This matters because brute force is sometimes pictured as passwords thrown directly at port 22. In reality, each attempt happens inside a negotiated SSH session, which is also one reason the attack is slower than people expect.
 
----
+### Stage 3: Repeated authentication attempts
 
-## 4. Step 2 — Establishing the Connection
-
-The attacker connects to the SSH service.
-
-At a high level, the client and server negotiate the parameters required for an encrypted SSH session.
-
-The server identifies itself and the SSH protocol establishes the secure communication channel.
-
-Only after this does the attacker reach the authentication stage.
-
-This is important because people sometimes imagine a brute-force attack as simply sending passwords directly to port 22.
-
-There is more happening underneath.
-
----
-
-## 5. Step 3 — Repeated Authentication Attempts
-
-The attacker then starts testing credentials.
-
-A simplified sequence looks like this:
+The attacker then submits credentials, one pair after another:
 
 ```text
-                SSH Server
-                    |
-        +-----------+-----------+
-        |           |           |
-     Attempt 1   Attempt 2   Attempt 3
-        |           |           |
-     Failed      Failed      Failed
-                                |
-                         Attempt N
-                                |
-                         Successful?
-                          /                                No          Yes
-                        |            |
-                     Continue    Access gained
+                  SSH Server
+                      |
+        +-------------+-------------+
+        |             |             |
+    Attempt 1     Attempt 2     Attempt 3   ...   Attempt N
+        |             |             |                 |
+     Failed        Failed        Failed          Success or failure
 ```
 
-If the password is incorrect, the server rejects the authentication attempt.
+Each wrong guess is rejected and the attacker moves on. Automated tools make this orders of magnitude faster than manual typing.
 
-The attacker can then try again.
+### Stage 4: Access
 
-Automated tools make this process much faster than manually attempting passwords.
+If a guess succeeds, the attacker holds a valid session. At that point the event is no longer an authentication attack but an intrusion.
 
 ---
 
-## 6. What Does This Look Like in Logs?
+## 4. What the Attack Looks Like in Logs
 
-This is where the attack becomes particularly interesting for defenders.
+Logs are where this attack becomes visible to defenders. On Debian and Ubuntu, `sshd` writes authentication events to `/var/log/auth.log`. On RHEL-based systems the file is `/var/log/secure`. Systems using systemd can also query them with `journalctl -u ssh`.
 
-On Linux systems, failed SSH authentication attempts are commonly recorded by the system's logging infrastructure.
-
-For example, Red Hat documents entries similar to:
+A burst of automated guessing looks like this:
 
 ```text
-sshd: Failed password for illegal user admin from 172.16.59.10
+Oct  3 02:14:07 srv01 sshd[1842]: Failed password for invalid user admin from 203.0.113.50 port 51234 ssh2
+Oct  3 02:14:09 srv01 sshd[1844]: Failed password for invalid user admin from 203.0.113.50 port 51236 ssh2
+Oct  3 02:14:11 srv01 sshd[1846]: Failed password for root from 203.0.113.50 port 51238 ssh2
+Oct  3 02:14:13 srv01 sshd[1848]: Failed password for root from 203.0.113.50 port 51240 ssh2
+Oct  3 02:14:15 srv01 sshd[1850]: Failed password for invalid user test from 203.0.113.50 port 51242 ssh2
 ```
 
-Repeated failures from the same source can be a strong indicator that someone is attempting to guess credentials. citeturn0search11
+Three details are worth reading closely:
 
-A defender might therefore see something like:
+- **`invalid user`** means the username does not exist on the system. Many of these in a row suggest the attacker is guessing account names blindly.
+- **The source IP** stays constant here, which points to a single scanning host. A distributed attack would show many sources.
+- **The source port** changes with each attempt, because each attempt opens a new TCP connection.
 
-```text
-Failed password for invalid user admin from 203.0.113.50
-Failed password for invalid user admin from 203.0.113.50
-Failed password for root from 203.0.113.50
-Failed password for root from 203.0.113.50
-Failed password for test from 203.0.113.50
-```
-
-One failed login is not necessarily suspicious.
-
-Hundreds of failed attempts against multiple usernames from the same source are a very different story.
+One failed login means nothing. A person mistypes a password every day. Hundreds of failures against several usernames from one source in a few minutes are a different situation.
 
 ---
 
-## 7. When Does Brute Force Become Dangerous?
+## 5. When Brute Force Becomes Dangerous
 
-The attack itself does not guarantee successful access.
+Most brute-force attempts fail. The danger starts when one succeeds:
 
-The real danger comes when the attacker eventually discovers valid credentials.
-
-For example:
+```text
+Oct  3 02:41:52 srv01 sshd[2310]: Accepted password for admin from 203.0.113.50 port 52980 ssh2
+```
 
 ```text
 Attacker
    |
-   | username: admin
-   | password: ********
+   |  username: admin
+   |  password: ********
    v
 SSH Server
    |
-   | Authentication successful
+   |  Authentication successful
    v
 Remote Shell
 ```
 
-At that point, the problem is no longer simply an authentication attack.
-
-The attacker may now have an initial foothold on the system.
-
-What they can do next depends on the privileges of the compromised account and the security controls surrounding the system.
-
-This is where other attack techniques can become relevant, including:
+The attacker now has an initial foothold. What happens next depends on the privileges of the compromised account and the controls around it:
 
 - Privilege escalation
 - Persistence
@@ -210,44 +192,25 @@ This is where other attack techniques can become relevant, including:
 - Data theft
 - Command execution
 
-So an SSH brute-force attack is often better understood as a possible **initial-access technique**, rather than the complete attack.
+This is why SSH brute force is best understood as an **initial-access technique** and not as a complete attack. It is the first step in a longer chain.
 
 ---
 
-## 8. How Can Defenders Detect It?
+## 6. Detection
 
-A basic detection strategy is to monitor authentication failures.
+Detection starts with monitoring authentication failures. Four indicators are especially useful.
 
-Useful indicators include:
+**High failure volume.** A large number of failed logins in a short window points to automated guessing.
 
-### High number of failures
-
-A large number of failed SSH logins in a short period can indicate automated password guessing.
-
-### Multiple usernames from one source
-
-For example:
+**Many usernames from one source.** Common account names tried in sequence suggest enumeration:
 
 ```text
-root
-admin
-test
-ubuntu
-guest
-administrator
+root, admin, test, ubuntu, guest, administrator
 ```
 
-Trying many common usernames can indicate automated enumeration.
+**Slow, persistent activity.** Some campaigns deliberately space out attempts to stay below simple thresholds. Look at behavior over hours and days, not only minutes.
 
-### Repeated activity over time
-
-An attacker may not always perform thousands of attempts immediately.
-
-Some campaigns deliberately slow down their attempts to make detection harder.
-
-### Successful login after many failures
-
-This deserves particular attention:
+**Success after many failures.** This is the highest-priority pattern:
 
 ```text
 Failed
@@ -257,140 +220,136 @@ Failed
 SUCCESS
 ```
 
-A successful authentication following a large number of failures should trigger investigation, especially if the source or account is unusual.
+A successful login following a long run of failures, especially from an unusual source or onto an unusual account, should always be investigated.
 
----
+### A quick triage command
 
-## 9. How Can You Defend Against SSH Brute Force?
+To see which source IPs generate the most failures on a Debian or Ubuntu host:
 
-There is no single magic setting that solves the problem.
-
-A layered approach is much stronger.
-
-### Use SSH keys instead of passwords
-
-Public-key authentication is generally preferable to password-based authentication for administrative SSH access.
-
-### Disable password authentication where appropriate
-
-If your environment supports key-based authentication and does not require passwords, disabling password authentication can remove an entire class of password-guessing attacks.
-
-### Disable direct root login
-
-Administrators can use individual accounts and controlled privilege escalation instead of allowing direct root authentication.
-
-### Restrict SSH exposure
-
-If SSH only needs to be accessible from a corporate network, VPN, bastion host, or specific administrative IP ranges, do not expose it unnecessarily to the entire Internet.
-
-### Use rate limiting and blocking controls
-
-Tools such as Fail2ban can react to repeated authentication failures and temporarily block abusive sources.
-
-### Monitor authentication logs
-
-Detection is essential.
-
-Even a well-configured server should be monitored so that suspicious authentication activity can be investigated.
-
----
-
-## 10. What Should a SOC Analyst Look For?
-
-Imagine you are investigating an alert for unusual SSH activity.
-
-A useful investigation could include:
-
-```text
-1. Identify the source IP
-        ↓
-2. Count failed authentication attempts
-        ↓
-3. Identify targeted usernames
-        ↓
-4. Check whether authentication eventually succeeded
-        ↓
-5. Identify the successful account
-        ↓
-6. Check the source location/reputation
-        ↓
-7. Review commands and activity after login
-        ↓
-8. Determine whether the account was compromised
+```bash
+grep "Failed password" /var/log/auth.log \
+  | grep -oE "from [0-9]{1,3}(\.[0-9]{1,3}){3}" \
+  | sort | uniq -c | sort -rn | head
 ```
 
-This is where SSH brute force becomes more than a simple "hacking technique."
+In a production environment this kind of check belongs in a SIEM such as Wazuh, with rules and thresholds, not in manual `grep` sessions. The command is useful for understanding what the data looks like before you automate the detection.
 
-It becomes a **detection and investigation problem**.
+---
 
-A SOC analyst is not only asking:
+## 7. Defense
+
+No single setting solves this problem. Layered controls are much stronger than any one of them.
+
+| Control | Why it helps |
+|---|---|
+| **Use SSH keys instead of passwords** | Public-key authentication removes password guessing as an attack path |
+| **Disable password authentication** | Where keys are available, turning passwords off eliminates a whole class of attack |
+| **Disable direct root login** | Forces attackers to guess both a valid username and a password, and keeps administrative actions tied to named accounts |
+| **Restrict SSH exposure** | Limit access to a VPN, bastion host, or specific administrative IP ranges instead of the whole Internet |
+| **Rate limit and block** | Tools such as Fail2ban temporarily ban sources that keep failing |
+| **Monitor authentication logs** | Even a well-configured server needs someone, or something, watching it |
+
+### Example hardening baseline
+
+The relevant directives in `/etc/ssh/sshd_config` look like this:
+
+```text
+PermitRootLogin no
+PasswordAuthentication no
+PubkeyAuthentication yes
+MaxAuthTries 3
+LoginGraceTime 30
+AllowUsers deploy admin
+```
+
+After any change, validate the configuration and reload the service:
+
+```bash
+sudo sshd -t && sudo systemctl reload ssh
+```
+
+> **Caution:** Before disabling password authentication, confirm that your key-based login works in a second session. Otherwise you can lock yourself out of the server.
+
+Changing the default port reduces noise from opportunistic scanners, but it is not a security control on its own. Treat it as a minor convenience, not a defense.
+
+---
+
+## 8. Investigating an Alert as a SOC Analyst
+
+Suppose you receive an alert for unusual SSH activity. A structured investigation follows these steps:
+
+```mermaid
+flowchart TD
+    A[1. Identify the source IP] --> B[2. Count failed attempts]
+    B --> C[3. List targeted usernames]
+    C --> D{4. Did authentication succeed?}
+    D -->|No| E[Block source and document]
+    D -->|Yes| F[5. Identify the account used]
+    F --> G[6. Check source location and reputation]
+    G --> H[7. Review activity after login]
+    H --> I[8. Decide: compromised or not]
+```
+
+At this point the attack stops being a simple hacking technique and becomes a **detection and investigation problem**. The analyst is not only asking:
 
 > "Did someone try to log in?"
 
-They are asking:
+The real questions are:
 
 > "Was the activity malicious, did it succeed, and what happened afterward?"
 
+If the answer to the second question is yes, the priorities change quickly: contain the account, preserve the logs, and review everything the session did.
+
 ---
 
-## 11. The Bigger Lesson
+## 9. The Bigger Lesson
 
-SSH brute-force attacks demonstrate an important cybersecurity principle:
+An attack does not need to be sophisticated to be dangerous.
 
-**An attack does not need to be sophisticated to be dangerous.**
-
-SSH itself can be securely designed and encrypted, yet weak credentials, excessive exposure, poor monitoring, or weak access controls can still create opportunities for attackers.
-
-Security therefore cannot depend on one control.
-
-You want multiple layers:
+SSH is well designed and encrypted. Weak credentials, unnecessary exposure, poor monitoring, or loose access controls can still hand an attacker a way in. Security cannot rest on one control. It rests on several, stacked so that a failure in one is caught by another:
 
 ```text
 Strong authentication
-        +
+         +
 Limited exposure
-        +
+         +
 Least privilege
-        +
+         +
 Rate limiting
-        +
+         +
 Logging
-        +
+         +
 Monitoring
-        +
+         +
 Incident response
 ```
 
-If one layer fails, the others should make exploitation harder and help detect what happened.
+If one layer fails, the others should make exploitation harder and help you work out what happened.
 
 ---
 
 ## Conclusion
 
-An SSH brute-force attack is essentially a repeated authentication attack against a remote service.
+An SSH brute-force attack is a repeated authentication attack against a remote service. The mechanics are short:
 
-The technical process is straightforward:
+**Discover SSH, connect, attempt credentials, observe responses, repeat, gain access if successful.**
 
-**Discover SSH → Connect → Attempt credentials → Observe responses → Repeat → Gain access if successful**
+The more valuable skills sit around that process. Can you recognize the attack in logs? Can you separate ordinary failed logins from automated activity? Can you tell whether an attempt succeeded? And if it did, can you reconstruct what happened next?
 
-The more interesting part for a cybersecurity professional is what happens around that process.
-
-Can you recognize the attack in logs?
-
-Can you distinguish normal failed logins from automated activity?
-
-Can you determine whether an authentication attempt succeeded?
-
-And if it did, can you investigate what happened next?
-
-Understanding those questions takes you beyond simply knowing what a brute-force attack is — and toward thinking like a security analyst.
+Answering those questions is what moves you from knowing what a brute-force attack is to thinking like a security analyst.
 
 ---
 
 ## References
 
-- Red Hat — *How to secure the SSHD daemon*
-- OpenSSH documentation
-- MITRE ATT&CK — Valid Accounts / Brute Force techniques
+- Red Hat, *How to secure the SSHD daemon*
+- OpenSSH documentation, `sshd_config` manual
+- MITRE ATT&CK, [T1110 Brute Force](https://attack.mitre.org/techniques/T1110/)
+- MITRE ATT&CK, [T1078 Valid Accounts](https://attack.mitre.org/techniques/T1078/)
+- MITRE ATT&CK, [T1021.004 Remote Services: SSH](https://attack.mitre.org/techniques/T1021/004/)
 
-*This article is intended for educational and defensive cybersecurity purposes. Any testing should be performed only on systems you own or are explicitly authorized to assess.*
+---
+
+<p align="center">
+  <em>This article is intended for educational and defensive cybersecurity purposes. Test only on systems you own or are explicitly authorized to assess.</em>
+</p>
